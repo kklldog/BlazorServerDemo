@@ -1,0 +1,49 @@
+﻿@page "/student/add"
+
+@using BlazorServerDemo.Model
+@using BlazorServerDemo.Data
+
+@inject NavigationManager NavManager
+@inject IStudentRepository Repository
+
+<h1>Add</h1>
+
+<Edit Student="Student" OnSaveCallback="OnSave"></Edit>
+
+<div class="text-danger">
+    @_errmsg
+</div>
+
+@code {
+
+    private Student Student { get; set; }
+
+    private string _errmsg;
+
+    protected override Task OnInitializedAsync()
+    {
+        Student = new Student()
+        {
+            Id = 1
+        };
+
+        return base.OnInitializedAsync();
+    }
+
+    private void OnSave(Student student)
+    {
+        Student = student;
+
+        var result = Repository.Add(student);
+
+        if (result)
+        {
+            NavManager.NavigateTo("/student/list");
+        }
+        else
+        {
+            _errmsg = "保存失败";
+        }
+    }
+
+}

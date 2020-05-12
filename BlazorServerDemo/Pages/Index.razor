@@ -1,0 +1,13 @@
+﻿@page "/"
+@inject NavigationManager NavManager
+
+<p>index</p>
+
+@code{ 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        NavManager.NavigateTo("/student/list");
+
+        base.OnAfterRender(firstRender);
+    }
+}

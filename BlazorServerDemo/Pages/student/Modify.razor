@@ -1,0 +1,45 @@
+﻿@page "/student/modify/{Id:int}"
+
+@using BlazorServerDemo.Model
+@using BlazorServerDemo.Data
+
+@inject NavigationManager NavManager
+@inject IStudentRepository Repository
+
+<h1>Modify</h1>
+
+<Edit Student="Student" OnSaveCallback="OnSave"></Edit>
+
+<div class="text-danger">
+    @_errmsg
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Student Student { get; set; }
+
+    private string _errmsg;
+
+    protected override void OnInitialized()
+    {
+        Student = Repository.Get(Id);
+    }
+
+    private void OnSave(Student student)
+    {
+        Student = student;
+
+        var result = Repository.Update(student);
+
+        if (result)
+        {
+            NavManager.NavigateTo("/student/list");
+        }
+        else
+        {
+            _errmsg = "保存失败";
+        }
+    }
+}

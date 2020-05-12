@@ -1,0 +1,40 @@
+﻿@page "/student/delete/{Id:int}"
+
+@using BlazorServerDemo.Model
+@using BlazorServerDemo.Data
+
+@inject NavigationManager NavManager
+@inject IStudentRepository Repository
+
+<h1>Delete</h1>
+
+<h3>
+    确定删除（@Student.Id）@Student.Name ？
+</h3>
+
+<button class="btn btn-danger" @onclick="OnDeleteAsync">
+    删除
+</button>
+
+<CancelBtn Name="取消"></CancelBtn>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Student Student { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Student = Repository.Get(Id);
+    }
+
+    private void OnDeleteAsync()
+    {
+        var result = Repository.Delete(Id);
+        if (result)
+        {
+            NavManager.NavigateTo("/student/list");
+        }
+    }
+}
